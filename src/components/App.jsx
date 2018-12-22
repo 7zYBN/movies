@@ -4,6 +4,8 @@ import NavBar from "./navbar";
 import SearchLine from "./searchline";
 import FilmBlock from "./filmblock";
 //import customData from "../movie_ids_12_16_2018_copy.json";
+import SinglePage from "./routes/singlepage";
+import { Route } from "react-router-dom";
 
 class App extends Component {
   state = {
@@ -81,6 +83,7 @@ class App extends Component {
               <FilmBlock key={film.id} film={film} />
             ))}
           </div>
+          <Route path="/1" component={SinglePage} />
         </React.Fragment>
       );
     }
