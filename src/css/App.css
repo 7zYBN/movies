@@ -1,0 +1,22 @@
+.filmsContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.filmblock img {
+  height: 278px;
+}
+
+.filmblock {
+  display: flex;
+  margin: 15px;
+  width: 350px;
+}
+
+.overview {
+  font-size: 15px;
+  font-family: "Staatliches", cursive;
+  margin-left: 10px;
+  text-align: justify;
+}
