@@ -4,6 +4,9 @@ import NavBar from "./navbar";
 import SearchLine from "./searchline";
 import FilmBlock from "./filmblock";
 //import customData from "../movie_ids_12_16_2018_copy.json";
+import SinglePage from "./routes/singlepage";
+import FullList from "./routes/list";
+import { Route } from "react-router-dom";
 
 class App extends Component {
   state = {
@@ -60,10 +63,12 @@ class App extends Component {
   //       });
   //   }
   // }
+  resultsMap = () => {
+    console.log(this.state.myJson.results.map(film => film));
+    return this.state.myJson.results.map(film => film);
+  }
 
   render() {
-    console.log(this.state.myJson);
-    console.log("ren");
     //if (!this.state.myJson.every(this.allStateisLoaded)) {
     if (!this.state.isLoaded) {
       return (
@@ -73,14 +78,26 @@ class App extends Component {
       );
     } else {
       return (
+        
         <React.Fragment>
           <NavBar totalCounters={5} />
           <SearchLine />
           <div className="filmsContainer">
-            {this.state.myJson.results.map(film => (
-              <FilmBlock key={film.id} film={film} />
-            ))}
+            <Route
+              exact={true}
+              path={`/`}
+              render={() => {
+                return this.state.myJson.results.map(film => (
+                  <FilmBlock key={film.id} film={film} />
+                ));
+              }}
+            />
+            <Route exact={true} path={`/:id`} component={SinglePage} />
           </div>
+          
+          {/* path={`/:${this.resultsMap().id}`} */}
+          {/* <Route path={`/:297802`} render={(props)=> ( <SinglePage {...props} id={`297802`} /> )} /> */}
+          {/* <Route path={`/:${this.state.myJson.results.map(film => film.id)}`} render={(props)=> ( <SinglePage {...props} id={`297802`} /> )} /> */}
         </React.Fragment>
       );
     }

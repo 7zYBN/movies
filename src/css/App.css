@@ -20,3 +20,7 @@
   margin-left: 10px;
   text-align: justify;
 }
+
+.singlePageBlock {
+  display: flex;
+}
