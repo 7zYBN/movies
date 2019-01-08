@@ -1,26 +1,13 @@
 import React, { Component } from "react";
 import "../../css/App.css";
-// class SinglePage extends Component {
-//   state = {};
-
-//   render() {
-//     return <div>{this.props.id}</div>;
-//   }
-// }
-
-// export default SinglePage;
-
-// const SinglePage = ({ match }) => {
-//   return <div>{match.params.id}</div>
-// };
-
-// export default SinglePage;
 
 class SinglePage extends Component {
   state = {
     isLoaded: false,
+    isLoaded2: false,
     API: "30695d18fe58cd0453b8d9a1bcdaf8ff",
-    myJson: null
+    myJson: null,
+    personsJson: null
   };
   componentDidMount() {
     fetch(
@@ -35,15 +22,45 @@ class SinglePage extends Component {
           myJson
         });
       });
+
+    fetch(
+      `https://api.themoviedb.org/3/movie/${
+        this.props.match.params.id
+      }/credits?api_key=${this.state.API}`
+    )
+      .then(response => response.json())
+      .then(personsJson => {
+        this.setState({
+          isLoaded2: true,
+          personsJson
+        });
+        console.log(this.state.personsJson);
+      });
+    console.log("component mounted");
   }
+
+  move() {
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(() => {
+      if (width >= 100) {
+        clearInterval(id);
+      } else {
+        width++;
+        elem.style.width = width + "%";
+      }
+    }, 10);
+  }
+
   render() {
-    if (!this.state.isLoaded) {
+    if (!this.state.isLoaded || !this.state.isLoaded2) {
       return (
         <div>
           <span>loading</span>
         </div>
       );
     } else {
+      let departmentsArray = [];
       return (
         <div className="container">
           <div className="singlePageBlock">
@@ -54,6 +71,21 @@ class SinglePage extends Component {
               alt=""
             />
             <p className="overview">{this.state.myJson.overview}</p>
+          </div>
+          {this.state.personsJson.crew.map((person, i) => {
+            if (departmentsArray.indexOf(person.department) === -1) {
+              departmentsArray.push(person.department);
+              return (
+                <div key={i}>
+                  Dep{person.department}
+                  <div key={person.credit_id}>Name{person.name}</div>
+                </div>
+              );
+            }
+            return <div key={person.credit_id}>Name{person.name}</div>;
+          })}
+          <div id="myProgress">
+            <div id="myBar" />
           </div>
         </div>
       );
